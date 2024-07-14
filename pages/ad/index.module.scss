@@ -1,0 +1,12 @@
+.setItem {
+    background: linear-gradient(181.25deg, #F7F7FF 15.08%, #D4D2FF 98.93%);
+}
+
+.transItem {
+    filter: drop-shadow(0px 2px 12px rgba(250, 229, 207, 0.3));
+}
+
+.transBtn:hover {
+    background-color: #E99430 !important;
+    opacity: 0.8;
+}

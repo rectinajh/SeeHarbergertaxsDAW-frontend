@@ -1,0 +1,20 @@
+.transaction {
+    [class*='ant-input-affix-wrapper'] {
+        padding: 0 10px !important;
+    }
+
+    input:disabled {
+        cursor: text !important;
+        color: #333 !important;
+    }
+
+    input {
+        color: transparent !important;
+        text-shadow: 0 0 0 #000;
+
+        &:focus,
+        &:focus-within {
+            background-color: inherit !important;
+        }
+    }
+}

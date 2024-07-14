@@ -1,0 +1,103 @@
+.sideBar {
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    padding: 24px 0px;
+    gap: 24px;
+    background-color: #fff;
+
+    position: fixed;
+    width: 96px;
+    height: 496px;
+    top: 0;
+    bottom: 0;
+    left: 40px;
+    margin: auto;
+    background: linear-gradient(180deg, rgba(252, 253, 252, 0.7) 0%, rgba(255, 255, 255, 0.9) 100%);
+    box-shadow: 0px 0px 68.8px rgba(1, 1, 1, 0.1);
+    backdrop-filter: blur(11px);
+    border-radius: 13px;
+    justify-content: center;
+    z-index: 99;
+
+}
+
+.barLinks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    &::after {
+        content: "";
+        display: block;
+        width: 56px;
+        height: 1px;
+        background-color: #EAEAEA;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+}
+
+.mbarItem {
+    svg {
+        width: 17px;
+    }
+}
+
+.barItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #D7D7DE;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+
+    svg {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+    }
+
+    &:hover {
+        background-color: #F1F0FF;
+    }
+
+    &.curr {
+        color: var(--primary-color);
+
+        span {
+            color: var(--primary-color);
+        }
+    }
+
+    span {
+        margin-top: 4px;
+        line-height: 1.5;
+        font-size: 16px;
+        color: rgba(30, 30, 30, 0.6);
+    }
+
+}
+
+.avar {
+    cursor: pointer;
+}
+
+.loginoutTip .ant-popover-inner {
+    width: 83px;
+    height: 43px;
+    border-radius: 8;
+    color: rgba(30, 30, 30, 0.6);
+    font-size: 16px;
+    padding: 0;
+    background: linear-gradient(180deg, rgba(252, 253, 252, 0.7) 0%, rgba(255, 255, 255, 0.9) 100%);
+    box-shadow: 0px 0px 68.8px rgba(1, 1, 1, 0.1);
+    backdrop-filter: blur(11px);
+}

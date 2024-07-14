@@ -1,0 +1,19 @@
+.upload [class*='ant-upload-drag'] {
+    border: none !important;
+    background: none !important;
+
+
+}
+
+.ad {
+    [class*='ant-image'] {
+        width: 100%;
+        height: 100%;
+    }
+
+    [class*='ant-image-img'] {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}

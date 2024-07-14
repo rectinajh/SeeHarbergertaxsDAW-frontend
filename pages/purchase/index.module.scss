@@ -1,0 +1,166 @@
+.title {
+    font-size: 32px;
+    top: 60px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+}
+
+.container {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.purchaseList {
+    max-width: 816px;
+    margin: auto;
+}
+
+/* 配置 */
+
+
+.purItem {
+    width: 100%;
+    font-size: 0;
+    position: relative;
+
+    img {
+        max-width: 100%;
+        background-color: #fff;
+        filter: drop-shadow(0px 4px 108.6px rgba(0, 0, 0, 0.25));
+        border-radius: 24px;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin: 24px 0 20px;
+    }
+
+}
+
+.desc {
+    position: relative;
+}
+
+.descItems {
+    display: flex;
+    font-size: 16px;
+
+
+    .left {
+        width: 120px;
+    }
+
+    .right {
+        img {
+            margin: 0 7px;
+            border-radius: 100%;
+        }
+
+        display: flex;
+        align-items: center;
+    }
+}
+
+.amount {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: left;
+    font-size: 16px;
+
+    span {
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 20px;
+    }
+}
+
+.button {
+    margin-top: 24px;
+    height: 48px;
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+@media (max-width: 1024px) {
+    .purchaseList {
+        max-width: 96%;
+        width: 100%;
+        margin: 40px auto;
+    }
+
+    .purItem {
+        width: max-content;
+        display: flex;
+        margin: 0 auto;
+
+
+        img {
+            width: 43vw;
+            margin-right: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    }
+
+    .descItems {
+        font-size: 16px;
+        margin-bottom: 6px;
+        justify-content: space-between;
+    }
+
+    .amount {
+        position: relative;
+        display: flex;
+        align-items: end;
+        font-size: 16px;
+        justify-content: space-between;
+
+        span {
+            font-size: 20px;
+        }
+    }
+
+    .button {
+        height: 32px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+    }
+
+    .right img {
+        width: 20px;
+        height: 20px;
+        margin-left: 0 !important;
+
+    }
+
+    .right [class*='ant-typography'] {
+        font-size: 12px !important;
+
+    }
+}
+
+@media (max-width: 768px) {
+
+    .descItems {
+        font-size: 12px;
+    }
+
+    .amount {
+        font-size: 12px;
+
+        span {
+            font-size: 16px;
+        }
+    }
+
+    .button {
+        font-size: 12px;
+    }
+}
