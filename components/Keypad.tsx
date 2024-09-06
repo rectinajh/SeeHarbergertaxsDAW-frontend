@@ -8,9 +8,10 @@ export interface IRef {
 }
 interface IProps {
     setInputValue: React.Dispatch<React.SetStateAction<string>>,
-    onChange: (isOpen: boolean) => void
+    onChange: (isOpen: boolean) => void,
+    onOk: () => void
 }
-const Keypad = React.forwardRef<IRef, IProps>(({ setInputValue, onChange }, ref) => {
+const Keypad = React.forwardRef<IRef, IProps>(({ setInputValue, onChange, onOk }, ref) => {
     const [open, setOpen] = useState(false)
     // const [cursorPosition, setCursorPosition] = useState(inputValue?.length);
     const keys = [
@@ -72,7 +73,7 @@ const Keypad = React.forwardRef<IRef, IProps>(({ setInputValue, onChange }, ref)
                         <button className='row-span-1 border-t border-gray-light border-opacity-50 hover:bg-purple_sub' onClick={() => handlePress('delete')}>
                             <DeleteIcon className="size-6 inline-block" />
                         </button>
-                        <button className='row-span-3 bg-purple text-white '>转账</button>
+                        <button className='row-span-3 bg-purple text-white ' onClick={onOk}>提交</button>
                     </div>
                 </div>
             </div>

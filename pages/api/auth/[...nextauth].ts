@@ -1,11 +1,15 @@
-// pages/api/auth/[...nextauth].ts
-
 import { IncomingMessage } from "http";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
+import { ethers } from "ethers";
+
+interface AuthCredentials {
+  message: string;
+  signature: string;
+}
 
 export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   const providers = [
@@ -15,6 +19,7 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}")
           );
+          let message = siwe.prepareMessage();
 
           const nextAuthUrl =
             process.env.NEXTAUTH_URL ||
@@ -22,40 +27,53 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
               ? `https://${process.env.VERCEL_URL}`
               : null);
           if (!nextAuthUrl) {
+            console.error("NEXTAUTH_URL is not set");
             return null;
           }
 
           const nextAuthHost = new URL(nextAuthUrl).host;
           if (siwe.domain !== nextAuthHost) {
+            console.error(`Invalid domain: ${siwe.domain} !== ${nextAuthHost}`);
             return null;
           }
+
+          const csrfToken = await getCsrfToken({
+            req: { headers: req.headers },
+          });
+          if (siwe.nonce !== csrfToken) {
+            console.error(`Invalid nonce: ${siwe.nonce} !== ${csrfToken}`);
+            return null;
+          }
+
+          // 使用 ethers.js 验证签名
+          const messageHash = ethers.utils.hashMessage(message);
+          const addressFromSignature = ethers.utils.recoverAddress(
+            messageHash,
+            credentials?.signature || ""
+          );
 
           if (
-            siwe.nonce !==
-            (await getCsrfToken({ req: { headers: req.headers } }))
+            addressFromSignature.toLowerCase() !== siwe.address.toLowerCase()
           ) {
+            console.error(
+              `Signature verification failed: ${addressFromSignature} !== ${siwe.address}`
+            );
             return null;
           }
 
-          await siwe.verify({ signature: credentials?.signature || "" });
           return {
             id: siwe.address,
+            message: message,
+            signature: credentials?.signature,
           };
         } catch (e) {
+          console.error("Error during authorization:", e);
           return null;
         }
       },
       credentials: {
-        message: {
-          label: "Message",
-          placeholder: "0x0",
-          type: "text",
-        },
-        signature: {
-          label: "Signature",
-          placeholder: "0x0",
-          type: "text",
-        },
+        message: { label: "Message", placeholder: "0x0", type: "text" },
+        signature: { label: "Signature", placeholder: "0x0", type: "text" },
       },
       name: "Ethereum",
     }),
@@ -64,23 +82,55 @@ export function getAuthOptions(req: IncomingMessage): NextAuthOptions {
   return {
     callbacks: {
       async session({ session, token }) {
+        // session.user.address = token.sub as string;
         session.address = token.sub;
         session.user = {
-          name: token.sub,
+          address: token.sub as string,
+          message: token.message,
+          signature: token.signature,
         };
+
         return session;
+      },
+      async jwt({ token, user }) {
+        if (user) {
+          token.sub = user.id;
+
+          // 将签名和信息存储到 token 中
+          token.message = (user as any).message;
+          token.signature = (user as any).signature;
+        }
+
+        return token;
       },
       async redirect({ url, baseUrl }) {
         if (url.startsWith(baseUrl)) return url;
-        // 默认重定向到首页
         return baseUrl;
       },
     },
+    // cookies: {
+    //   sessionToken: {
+    //     name: `sessionid`,
+    //     options: {
+    //       httpOnly: true,
+    //       sameSite: "lax",
+    //       path: "/",
+    //       secure: process.env.NODE_ENV === "production",
+    //     },
+    //   },
+    //   csrfToken: {
+    //     name: `csrftoken`,
+    //     options: {
+    //       httpOnly: false,
+    //       sameSite: "lax",
+    //       path: "/",
+    //       secure: process.env.NODE_ENV === "production",
+    //     },
+    //   },
+    // },
     providers,
     secret: process.env.NEXTAUTH_SECRET,
-    session: {
-      strategy: "jwt",
-    },
+    session: { strategy: "jwt" },
   };
 }
 

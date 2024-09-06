@@ -33,8 +33,8 @@ export default function Introduce() {
     };
     return (
         <main>
-            <div className='max-w-[816px] max-lg:w-11/12 pt-[60px] m-auto'>
-                <h1 className='text-[32px] mb-8'>介绍</h1>
+            <div className='max-w-[816px] max-lg:w-11/12 pt-[60px] m-auto max-lg:pt-4'>
+                <h1 className='text-[32px] mb-8 max-lg:text-xl text-center max-lg:mb-4'>介绍</h1>
 
                 <Collapse
                     defaultActiveKey={[1, 2]}

@@ -22,7 +22,7 @@ import { ConfigProvider } from 'antd';
 import { useRouter } from 'next/router';
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: '登陆到一块广告牌',
+  statement: 'sign in',
 });
 
 const queryClient = new QueryClient();

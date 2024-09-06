@@ -6,9 +6,9 @@
 
 .billImage {
   width: 100%;
-  background-color: #000;
+  // background-color: #000;
 
-  filter: drop-shadow(0px 4px 108.6px rgba(0, 0, 0, 0.25));
+  // filter: drop-shadow(0px 4px 108.6px rgba(0, 0, 0, 0.25));
   border-radius: 24px;
 }
 
@@ -18,10 +18,13 @@
   font-size: 0;
 }
 
+
+
 .billButton {
   width: 44px;
   height: 44px;
-  background-color: rgba(256, 256, 256, 0.1);
+  background: #FFFFFF;
+  box-shadow: 0px 1px 32px rgba(0, 0, 0, 0.13);
   border-radius: 50%;
   position: absolute;
   bottom: 46px;
@@ -81,7 +84,7 @@
   }
 
   &[data-preview] {
-    color: #fff;
+    color: #333;
     background: transparent;
     border: none;
 

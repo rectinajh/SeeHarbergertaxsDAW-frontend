@@ -17,6 +17,10 @@ import MStep3Icon from "./step3_m.svg";
 import DeleteIcon from "./delete.svg";
 import DownIcon from "./down.svg";
 import SuccessIcon from "./success.svg";
+import AvatarErrIcon from "./avatarerr.svg";
+import CloseIcon from "./close.svg";
+import LeftIcon from "./left.svg";
+import RightIcon from "./right.svg";
 
 export {
   adIcon,
@@ -38,4 +42,8 @@ export {
   DeleteIcon,
   DownIcon,
   SuccessIcon,
+  AvatarErrIcon,
+  CloseIcon,
+  LeftIcon,
+  RightIcon,
 };

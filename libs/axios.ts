@@ -1,21 +1,23 @@
-import axios, { AxiosResponse } from "axios";
-// import { message as Message } from "antd";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+// import { getCookie } from "./utils";
+import https from "https";
+
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  // baseURL: "/api/proxy/",
+  // baseURL: "text-api",
   timeout: 10000,
   headers: {
     "Content-Type": "multipart/form-data",
+    // "X-Csrftoken": "3V9NxnHlB4TSFhUX5HtUmZ133U37XFmg",
   },
+  withCredentials: true,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // const token =
-    //   typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
     return config;
   },
   (error) => Promise.reject(error)
@@ -44,5 +46,19 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+const get = (url: string, params?: object, config?: AxiosRequestConfig) => {
+  return axiosInstance.get(url, { params, ...config });
+};
+
+const post = (url: string, data?: object, config?: AxiosRequestConfig) => {
+  return axiosInstance.post(url, data, { ...config });
+};
+
+const patch = (url: string, data?: object, config?: AxiosRequestConfig) => {
+  return axiosInstance.patch(url, data, { ...config });
+};
+
+export { get, post, patch };
 
 export default axiosInstance;

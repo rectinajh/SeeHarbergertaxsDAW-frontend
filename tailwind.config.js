@@ -13,6 +13,27 @@ module.exports = {
       backgroundImage: {
         mh: "linear-gradient(180deg, rgba(252, 253, 252, 0.7) 0%, rgba(255, 255, 255, 0.9) 100%)",
       },
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
+        toggleRight: {
+          "0%, 100%": { transform: "translatex(0)", opacity: 1 },
+          "50%": { transform: "translatex(-100px)", opacity: 0 },
+          "51%": { transform: "translatex(100px)", opacity: 0 },
+        },
+        toggleLeft: {
+          "0%, 100%": { transform: "translatex(0)", opacity: 1 },
+          "50%": { transform: "translatex(100px)", opacity: 0 },
+          "51%": { transform: "translatex(-100px)", opacity: 0 },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 1s ease-in-out infinite",
+        toggleRight: "toggleRight 1s ease-in-out infinite",
+        toggleLeft: "toggleLeft 1s ease-in-out infinite",
+      },
     },
     colors: {
       white: "#fff",
@@ -21,9 +42,10 @@ module.exports = {
       purple_sub: "#E7E6FF",
       pink: "#ff49db",
       orange: "#E66448",
-      green: "#13ce66",
+      green: "#46C086",
       yellow: "#ffc82c",
       "gray-dark": "#273444",
+      "gray-200": " #e5e7eb",
       gray: "#9392A4",
       black: "#333",
       "gray-light": "#E8E8EE",

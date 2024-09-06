@@ -1,8 +1,16 @@
-.upload [class*='ant-upload-drag'] {
-    border: none !important;
-    background: none !important;
+.upload {
+    [class*='ant-upload-drag'] {
+        border: none !important;
+        background: none !important;
 
 
+    }
+
+    [class*='ant-upload-list-picture'] {
+        display: none;
+
+
+    }
 }
 
 .ad {

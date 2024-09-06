@@ -1,14 +1,20 @@
 import { WalletButton, ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { useSession } from 'next-auth/react';
+import { LoadingOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './index.module.scss';
+import { Spin } from 'antd';
+import { login } from '@/services';
+import { useLocalStorageState } from 'ahooks';
 
 
 
 const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
     const { address, isConnected } = useAccount();
+    const [customConnect, setCustomConnect] = useState(false)
+
     return (
         <>{!isConnected ?
             <WalletButton.Custom wallet={type}>
@@ -17,7 +23,7 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
                         <button
                             type="button"
                             disabled={!ready}
-                            onClick={connect}
+                            onClick={() => { connect(); setCustomConnect(true) }}
                             className={`${style.loginButton} ${style[type]}  `}>
                             <img src={`/images/${type}.svg`} alt={type} />
                         </button>
@@ -31,12 +37,18 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
                     openConnectModal,
                     authenticationStatus,
                     mounted,
+                    ...all
                 }) => {
                     const ready = mounted && authenticationStatus !== 'loading';
                     const walletConnected = ready && account && chain
                     const authed =
                         (!authenticationStatus ||
                             authenticationStatus === 'authenticated');
+
+                    if (walletConnected && customConnect) {
+
+                        openConnectModal()
+                    }
 
                     return (
                         <div
@@ -69,12 +81,28 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
 }
 export default function Login() {
     const { data: session } = useSession();
+    const [loading, setLoading] = useState(false)
     const router = useRouter();
     const { callbackUrl } = router.query;
+
+    const [info, setInfo] = useLocalStorageState('user-info', {
+        defaultValue: {},
+    });
+
     useEffect(() => {
         if (session) {
-            // const redirectUrl = '/';
-            router.push('/');
+            setLoading(true)
+
+            const { user } = session
+
+            const message = btoa(user.message!)
+            login({ useraddr: user.address, message, signature: user.signature }).then(res => {
+                setInfo(res.data)
+                router.push('/')
+
+            })
+
+
         }
     }, [session]);
 
@@ -82,11 +110,15 @@ export default function Login() {
         <div className={style.logins}>
             {/* {session.address} */}
             <div className={style.loginBox}>
-                <p>欢迎来到“一块广告牌”</p>
-                <h1 data-link={process.env.NEXT_PUBLIC_NEXTAUTH_URL}>登陆</h1>
-                <LoginButton type='metamask' />
-                <LoginButton type='WalletConnect' />
+                <p data-a={process.env.NEXT_PUBLIC_API_BASE_URL}>欢迎来到“一块广告牌”</p>
+                <h1 >登陆</h1>
+                <Spin spinning={loading} className='w-full' indicator={<LoadingOutlined spin />} >
+                    <LoginButton type='metamask' />
+                </Spin>
+                <Spin spinning={loading} indicator={<LoadingOutlined spin />} >
+                    <LoginButton type='WalletConnect' />
+                </Spin>
             </div>
         </div>
     )
-}
+}   

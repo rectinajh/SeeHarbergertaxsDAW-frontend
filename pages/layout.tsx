@@ -1,27 +1,21 @@
 import React, { useEffect } from 'react'
-import Image from 'next/image';
 import SideBar from '../components/SideBar';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import useCheckNet from '@/hooks/useCheckNet';
+import Head from 'next/head';
 type Props = {
     children: React.ReactElement,
     pathname: string
 }
 export default function Layout({ children, pathname }: Props) {
-    const { data: session } = useSession();
-    const router = useRouter()
-    useEffect(() => {
-        if (session) {
-            // const redirectUrl = '/';
-            router.push('/');
-        } else {
-            router.replace('/login');
-        }
-    }, [session]);
+    useCheckNet()
     return (
         <>
-            {pathname !== '/login' && <>
-                <SideBar></SideBar></>}
-            {children}</>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
+            </Head>
+            <div className='max-lg:pb-[76px]'>
+                {pathname !== '/login' && <>
+                    <SideBar></SideBar></>}
+                {children}</div></>
     )
 }

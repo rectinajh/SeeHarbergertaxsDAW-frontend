@@ -14,8 +14,9 @@
 }
 
 .purchaseList {
-    max-width: 816px;
-    margin: auto;
+    width: 816px;
+
+    margin: 20px auto 0;
 }
 
 /* 配置 */
@@ -28,9 +29,11 @@
 
     img {
         max-width: 100%;
-        background-color: #fff;
-        filter: drop-shadow(0px 4px 108.6px rgba(0, 0, 0, 0.25));
-        border-radius: 24px;
+        // background-color: #fff;
+        // filter: drop-shadow(0px 4px 108.6px rgba(0, 0, 0, 0.25));
+        // border-radius: 24px;
+        max-height: 392px;
+        object-fit: contain;
     }
 
     h3 {
@@ -47,6 +50,9 @@
 .descItems {
     display: flex;
     font-size: 16px;
+    opacity: 0.7;
+    font-family: 'MiSans';
+    margin-bottom: 8px;
 
 
     .left {
@@ -55,7 +61,7 @@
 
     .right {
         img {
-            margin: 0 7px;
+            margin: 0 7px 0 0;
             border-radius: 100%;
         }
 
@@ -70,6 +76,8 @@
     right: 0;
     text-align: left;
     font-size: 16px;
+    transform: translateY(-100%);
+    bottom: 24px;
 
     span {
         color: var(--primary-color);
@@ -93,14 +101,15 @@
     }
 
     .purItem {
-        width: max-content;
-        display: flex;
+        // width: max-content;
+        // display: flex;
         margin: 0 auto;
-
+        align-items: center;
 
         img {
-            width: 43vw;
-            margin-right: 20px;
+            max-width: 43vw;
+            // margin-right: 20px;
+            object-fit: cover;
         }
 
         h3 {
@@ -116,11 +125,12 @@
     }
 
     .amount {
-        position: relative;
+        position: static;
         display: flex;
         align-items: end;
         font-size: 16px;
         justify-content: space-between;
+        transform: none;
 
         span {
             font-size: 20px;
@@ -128,7 +138,7 @@
     }
 
     .button {
-        height: 32px;
+        // height: 32px;
         margin-bottom: 8px;
         border-radius: 4px;
     }
@@ -150,6 +160,10 @@
 
     .descItems {
         font-size: 12px;
+
+        .left {
+            width: 84px;
+        }
     }
 
     .amount {
@@ -162,5 +176,6 @@
 
     .button {
         font-size: 12px;
+        height: 32px;
     }
 }

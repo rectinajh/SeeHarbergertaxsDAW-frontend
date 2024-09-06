@@ -7,6 +7,18 @@ declare module "next-auth" {
   interface Session {
     /** The user's public Ethereum address. */
     address?: string;
-    user: DefaultSession["user"];
+    user: {
+      address: string;
+      message?: string;
+      signature?: string;
+    } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    address: string;
+    message?: string;
+    signature?: string;
   }
 }
