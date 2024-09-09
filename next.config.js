@@ -1,9 +1,25 @@
-/** @type {import('next').NextConfig} */
 const path = require("path");
 const fs = require("fs");
-const nextConfig = {
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true", // 当设置了 ANALYZE 环境变量时启用
+});
+
+/** @type {import('next').NextConfig} */
+const nextConfig = withBundleAnalyzer({
   debug: true,
-  // reactStrictMode: true,
+  productionBrowserSourceMaps: false,
+  transpilePackages: [
+    "antd",
+    "@ant-design",
+    "rc-util",
+    "rc-pagination",
+    "rc-picker",
+    "rc-notification",
+    "rc-tooltip",
+    "rc-tree",
+    "rc-table",
+    "@ant-design/icons",
+  ],
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push({
       test: /\.svg$/,
@@ -26,13 +42,12 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ["@ant-design/icons"],
   // devServer: {
   //   https: {
   //     key: fs.readFileSync(path.join(__dirname, "key.pem")),
   //     cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
   //   },
   // },
-};
+});
 
 module.exports = nextConfig;
