@@ -5,10 +5,8 @@
   "scripts": {
     "dev": "node server.js",
     "p-dev": "npm run css & HTTPS=true next dev",
-    "build:dev": "cross-env NODE_ENV=production dotenv -e  .env.development -- next build",
-    "start:dev": "cross-env NODE_ENV=production dotenv -e  .env.development -- next start",
-    "build": "cross-env ANALYZE=true NODE_ENV=production dotenv -e  .env.production -- next build",
-    "start": "cross-env NODE_ENV=production dotenv -e  .env.production -- next start",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
     "css": "npx tailwindcss -i ./public/styles/input.css -o ./public/styles/output.css --watch"
   },
@@ -25,6 +23,7 @@
     "echarts": "^5.5.1",
     "ethereum-blockies": "^0.1.1",
     "ethers": "^5",
+    "express": "^4.19.2",
     "http-proxy-middleware": "^3.0.0",
     "mathjs": "^13.0.3",
     "next": "^14.2.3",
@@ -40,16 +39,11 @@
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/ethereum-blockies": "^0.1.2",
-    "@next/bundle-analyzer": "^14.2.8",
     "@types/node": "^18.19.3",
     "@types/react": "^18.3.0",
     "autoprefixer": "^10.4.19",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.2",
     "eslint": "^8.15.0",
     "eslint-config-next": "^14.2.3",
-    "express": "^4.19.2",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "5.4.2"
