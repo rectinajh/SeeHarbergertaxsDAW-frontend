@@ -21,6 +21,31 @@ import { ConfigProvider } from 'antd';
 
 import { useRouter } from 'next/router';
 
+if (typeof window !== 'undefined') {
+  const originalFetch = window.fetch;
+  window.fetch = function(input, init) {
+      if (input.toString().includes('alchemy')) {
+          console.log('Alchemy request URL:', input);
+          console.log('Request method:', init?.method);
+          console.log('Request headers:', init?.headers);
+          
+          // 解码请求体
+          if (init?.body instanceof Uint8Array) {
+              const decoder = new TextDecoder();
+              const jsonString = decoder.decode(init.body);
+              console.log('Decoded request body:', JSON.parse(jsonString));
+          }
+          
+          // 获取调用栈
+          console.log('Stack trace:', new Error().stack?.split('\n').slice(1).join('\n'));
+          
+          // 打印当前组件上下文
+          console.log('Current component context:', this);
+      }
+      return originalFetch(input, init);
+  };
+}
+
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: 'sign in',
 });

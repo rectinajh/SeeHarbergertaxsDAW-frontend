@@ -45,7 +45,7 @@ next: ^14.2.3
 <b>NEXTAUTH_URL 一定要对上本地的地址,不然会登陆失败</b>
 
 ```
-NEXT_PUBLIC_API_BASE_URL="https://35.77.218.53:9101"
+NEXT_PUBLIC_API_BASE_URL="http://141.98.196.188:9101:9101"
 #  NEXT_PUBLIC_API_BASE_URL="text-api"
 # Mac/Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
 # Mac/Linux: openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
@@ -109,7 +109,7 @@ cd your-project
 
 ```js
 //后端域名/地址
-NEXT_PUBLIC_API_BASE_URL = "https://35.77.218.53:9101";
+NEXT_PUBLIC_API_BASE_URL = "http://141.98.196.188:9101:9101";
 
 // Mac/Linux: `openssl rand -hex 32` or go to https://generate-secret.now.sh/32
 

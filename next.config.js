@@ -19,6 +19,7 @@ const nextConfig = withBundleAnalyzer({
     "rc-tree",
     "rc-table",
     "@ant-design/icons",
+    "rc-input",
   ],
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.module.rules.push({
@@ -38,7 +39,7 @@ const nextConfig = withBundleAnalyzer({
       // request proxy
       {
         source: "/text-api/:path*",
-        destination: "https://35.77.218.53:9101/:path*",
+        destination: "http://141.98.196.188:9101/:path*",
       },
     ];
   },

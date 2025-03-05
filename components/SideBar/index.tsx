@@ -14,8 +14,15 @@ import Image from 'next/image';
 import { Button, Popover, Typography } from 'antd';
 import SuffixText from '../SuffixText';
 import sns from "@seedao/sns-js";
+import { ethers } from 'ethers';
+
+
+
+
 import { UserInfo } from '@/types/response';
 import { useLocalStorageState } from 'ahooks';
+
+
 
 
 const sidebarList = [
@@ -42,11 +49,19 @@ const sidebarList = [
 ]
 
 
+
+
 export default function SideBar() {
 
     const { pathname, push } = useRouter()
     const { data: session } = useSession();
-
+    //测试环境用到
+    const amoyProvider = useMemo(
+        () => new ethers.providers.JsonRpcProvider(
+          'https://polygon-amoy.g.alchemy.com/v2/NLvNMWR68o5BtyAIwu1lEvCALeSbMu6l'
+        ),
+        []
+      );
     const [name, setName] = useState<string>('')
     const rootPath = useMemo(() => {
         return '/' + pathname.split('/')[1]
@@ -61,10 +76,30 @@ export default function SideBar() {
         disconnect()
         push('/login');
     };
+    // const getName = useCallback(async (address: string) => {
+    //     address =  await sns.resolve("abc.seedao", "https://polygon-amoy.g.alchemy.com/v2/"+address)
+    //     //如果正式环境 可以还原成 await sns.name(address)
+    //      // 根据 sns-js 文档可能需要额外指定网络
+    //     const snsname: string =await sns.name(address, {
+    //         provider: amoyProvider,
+    //         network: 'amoy' 
+    //       });
+    //     setName(snsname || ensname.data || address)
+    // }, [ensname])
     const getName = useCallback(async (address: string) => {
-        const snsname: string = await sns.name(address)
-        setName(snsname || ensname.data || address)
-    }, [ensname])
+        try {
+            // 使用 Alchemy RPC URL 进行解析
+            const resolvedAddress = await sns.resolve(address, "https://polygon-amoy.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY");
+    
+            // 获取 SNS 名称
+            const snsname: string = await sns.name(resolvedAddress, amoyProvider as any);
+    
+            setName(snsname || ensname?.data || address);
+        } catch (error) {
+            console.error("Error resolving SNS name:", error);
+            setName(address); // 出错时回退到原始地址
+        }
+    }, [sns, amoyProvider, ensname]);
 
     const [info] = useLocalStorageState<UserInfo>('user-info');
 
