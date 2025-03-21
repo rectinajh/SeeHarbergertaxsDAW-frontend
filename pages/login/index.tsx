@@ -14,6 +14,7 @@ import { useLocalStorageState } from 'ahooks';
 const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
     const { address, isConnected } = useAccount();
     const [customConnect, setCustomConnect] = useState(false)
+    const [modalOpened, setModalOpened] = useState(false)
 
     return (
         <>{!isConnected ?
@@ -45,10 +46,14 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
                         (!authenticationStatus ||
                             authenticationStatus === 'authenticated');
 
-                    if (walletConnected && customConnect) {
 
-                        openConnectModal()
-                    }
+                    // Move the modal opening logic to useEffect via state
+                    useEffect(() => {
+                        if (walletConnected && customConnect && !modalOpened) {
+                            setModalOpened(true);
+                            openConnectModal();
+                        }
+                    }, [walletConnected, customConnect, modalOpened]);
 
                     return (
                         <div

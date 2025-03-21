@@ -6,7 +6,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withBundleAnalyzer({
-  debug: true,
+
   productionBrowserSourceMaps: false,
   transpilePackages: [
     "antd",
