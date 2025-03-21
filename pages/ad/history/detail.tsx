@@ -33,21 +33,7 @@ const Detail = () => {
     const [currIndex, setCurrIndex] = useState<number>(0)
 
     const [info] = useLocalStorageState<UserInfo>('user-info');
-    const [reason, setReason] = useState('')
-    useEffect(() => {
-        if (storageDetail) {
-            setPage(storageDetail.page || 1)
-            run(storageDetail.page!);
-            (storageDetail).audmsg && setReason((storageDetail).audmsg)
-        }
-    }, [])
-
-
-    const currDetail = useMemo(() => list[currIndex], [currIndex, list])
-    const dirDisabled = useMemo(() => ({
-        [DIRECTION.left]: !links?.previous && currIndex <= 0,
-        [DIRECTION.right]: !links?.next && currIndex >= list.length - 1
-    }), [currIndex, links?.next, links?.previous, list.length])
+    const [reason, setReason] = useState('');
 
     function getAdPage(page: number, direction?: DIRECTION, id?: number | string): Promise<IListRes> {
         console.log(page, 'page')
@@ -91,6 +77,23 @@ const Detail = () => {
             setList((prev) => prev.concat(result.results))
         }
     })
+    
+    useEffect(() => {
+        if (storageDetail) {
+            setPage(storageDetail.page || 1)
+            run(storageDetail.page!);
+            (storageDetail).audmsg && setReason((storageDetail).audmsg)
+        }
+    }, [storageDetail, run])
+
+
+    const currDetail = useMemo(() => list[currIndex], [currIndex, list])
+    const dirDisabled = useMemo(() => ({
+        [DIRECTION.left]: !links?.previous && currIndex <= 0,
+        [DIRECTION.right]: !links?.next && currIndex >= list.length - 1
+    }), [currIndex, links?.next, links?.previous, list.length])
+
+ 
 
     useEffect(() => {
         setTimeout(() => {

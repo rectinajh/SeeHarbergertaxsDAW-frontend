@@ -89,7 +89,8 @@ export default function SideBar() {
     const getName = useCallback(async (address: string) => {
         try {
             // 使用 Alchemy RPC URL 进行解析
-            const resolvedAddress = await sns.resolve(address, "https://polygon-amoy.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY");
+            const rpcUrl = process.env.NEXT_PUBLIC_POLYGON_RPC_URL || "https://polygon-amoy.infura.io/v3/e56f974b3c484f52af1975ca21d5f1ed";
+const resolvedAddress = await sns.resolve(address, rpcUrl);
     
             // 获取 SNS 名称
             const snsname: string = await sns.name(resolvedAddress, amoyProvider as any);
@@ -99,7 +100,7 @@ export default function SideBar() {
             console.error("Error resolving SNS name:", error);
             setName(address); // 出错时回退到原始地址
         }
-    }, [sns, amoyProvider, ensname]);
+    }, [amoyProvider, ensname]);
 
     const [info] = useLocalStorageState<UserInfo>('user-info');
 

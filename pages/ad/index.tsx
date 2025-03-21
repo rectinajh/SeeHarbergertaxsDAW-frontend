@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react'
 import { Button } from 'antd';
 import Link from 'next/link';
+import Image from 'next/image';
 import style from './index.module.scss';
 import { getAuditAdvertise } from '@/services';
 import { useRequest } from 'ahooks';
 import { useRouter } from 'next/router';
 import NotifAlert from '@/components/NotifAlert';
 import UnUse, { IRef as IUseRef } from '@/components/UnUse';
+
 
 export default function Ad() {
     const unUseRef = useRef<IUseRef>(null)
@@ -48,7 +50,13 @@ export default function Ad() {
                             <h3 className="text-lg  md:text-2xl mb-3 font-semibold">图片配置</h3>
                             <p className='text-xs md:text-base'>配置PC端广告图片 <br />&移动端广告图片</p>
                         </div>
-                        <img src="/images/adimgset.svg" alt="set" className='xl:my-[70px] lg:my-[30px] max-lg:mb-[17px] max-lg:w-[33vw]' />
+                        <Image 
+                            src="/images/adimgset.svg" 
+                            alt="set" 
+                            width={125}
+                            height={125}
+                            className='xl:my-[70px] lg:my-[30px] max-lg:mb-[17px] max-lg:w-[33vw]' 
+                        />
                     </div>
                     <Button block type="primary" className="h-14 rounded-lg flex-shrink-0 max-lg:h-10" onClick={handleSettle}>去配置</Button>
                 </div>
@@ -59,7 +67,13 @@ export default function Ad() {
                             <h3 className="text-lg  md:text-2xl mb-3 font-semibold">交易设置</h3>
                             <p className='text-xs md:text-base'> 设置广告牌售出价，  <br />&提取或补充质押金额</p>
                         </div>
-                        <img src="/images/adtranset.svg" alt="set" className='xl:my-[70px] lg:my-[30px] max-lg:mb-[17px] max-lg:w-[33vw]' />
+                        <Image 
+                            src="/images/adtranset.svg" 
+                            alt="set" 
+                            width={125}
+                            height={125}
+                            className='xl:my-[70px] lg:my-[30px] max-lg:mb-[17px] max-lg:w-[33vw]' 
+                        />
                     </div>
 
                     <Link href="/ad/transaction"> <Button block className={`h-14 bg-[#E99430] rounded-lg ${style.transBtn} max-lg:h-10`} type="primary">去配置</Button></Link>

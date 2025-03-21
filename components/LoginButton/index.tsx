@@ -6,6 +6,7 @@ import { useState } from "react";
 import { WalletButton, ConnectButton } from "@/components/WalletButton";
 import style from "@/styles/LoginButton.module.css";
 import { login } from "@/services/index";
+import Image from "next/image";
 
 const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
   const { address, isConnected } = useAccount();
@@ -135,8 +136,15 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
                       onClick={openConnectModal} 
                       type="button"
                       className={`${style.loginButton} ${style[type]}`}
+                      style={{ padding: '20px' }}
                     >
-                      <img src={`/images/${type}.svg`} alt={type} />
+                      <Image 
+                        src={`/images/${type}.svg`} 
+                        alt={type} 
+                        width={100}
+                        height={100}
+                        style={{ cursor: 'pointer' }}
+                      />
                     </button>
                   );
                 }

@@ -29,15 +29,15 @@ const DetailMobile = ({ data = [], currIndex: [index, setIndex] = [0, () => { }]
         } else if (currentSlide <= 0 && links?.previous) {
             run(currPage - 1)
         }
-
-    }, [])
+    // 添加所有使用的变量作为依赖项
+    }, [currPage, data.length, links?.next, links?.previous, run, setIndex])
 
 
     const [info] = useLocalStorageState<UserInfo>('user-info');
 
     useEffect(() => {
         carouselRef.current?.goTo(index, true)
-    }, [])
+    }, [index])
 
     const collapseItems = (item: IAdvertise) => {
         const items = [{
