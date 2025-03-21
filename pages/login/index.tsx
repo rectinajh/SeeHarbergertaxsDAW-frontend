@@ -143,15 +143,77 @@ const LoginButton = ({ type }: { type: "metamask" | "WalletConnect" }) => {
     );
   };
 
-export default function Login() {
+  export default function Login() {
     const { data: session } = useSession();
     const [loading, setLoading] = useState(false)
     const router = useRouter();
     const { callbackUrl } = router.query;
+    const { address, isConnected } = useAccount();
+    const { signMessageAsync } = useSignMessage();
+    const [customConnect, setCustomConnect] = useState(false);
 
     const [info, setInfo] = useLocalStorageState('user-info', {
         defaultValue: {},
     });
+
+    const handleLogin = async () => {
+      try {
+        // 确保在服务端获取 CSRF token
+        const csrfToken = await getCsrfToken();
+        console.log('CSRF Token:', csrfToken); // 调试用
+
+        if (!csrfToken) {
+          throw new Error('Failed to get CSRF token');
+        }
+
+        // 创建签名消息
+        const message = new SiweMessage({
+          domain: window.location.host,
+          address: address,
+          statement: "Sign in with Ethereum to the app",
+          uri: window.location.origin,
+          version: "1",
+          chainId: 80002,
+          nonce: csrfToken  // 使用获取到的 CSRF token
+        });
+
+        const messageStr = message.prepareMessage();
+        console.log('Message:', messageStr); // 调试用
+        
+        // 获取签名
+        const signature = await signMessageAsync({
+          message: messageStr,
+        });
+        console.log('Signature:', signature); // 调试用
+
+        // 调用后端登录接口
+        const loginResponse = await login({
+          useraddr: address!,
+          message: btoa(messageStr),
+          signature: signature
+        });
+
+        console.log('Login response:', loginResponse); // 调试用
+
+        // 调用 Next Auth 的 signIn 方法，发送签名结果
+        await signIn('credentials', {
+          message: messageStr,
+          signature,
+          redirect: false,
+        });
+
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+    };
+
+    // 当钱包连接状态变化时自动处理登录
+    useEffect(() => {
+        if (isConnected && customConnect) {
+            handleLogin();
+            setCustomConnect(false);
+        }
+    }, [isConnected, customConnect]);
 
     useEffect(() => {
         if (session) {
@@ -180,7 +242,10 @@ export default function Login() {
                         const ready = mounted && authenticationStatus !== 'loading';
                         return (
                           <button
-                            onClick={openConnectModal}
+                            onClick={() => { 
+                              openConnectModal(); 
+                              setCustomConnect(true);
+                            }}
                             type="button"
                             className={style.metamask}
                             style={{ 
@@ -210,7 +275,10 @@ export default function Login() {
                         const ready = mounted && authenticationStatus !== 'loading';
                         return (
                           <button
-                            onClick={openConnectModal}
+                            onClick={() => { 
+                              openConnectModal(); 
+                              setCustomConnect(true);
+                            }}
                             type="button"
                             className={style.WalletConnect}
                             style={{ 
@@ -234,6 +302,24 @@ export default function Login() {
                       }}
                     </ConnectButton.Custom>
                   </div>
+                  {isConnected && (
+                    <button 
+                      onClick={handleLogin} 
+                      type="button"
+                      className={style.loginButton}
+                      style={{ 
+                        padding: '10px',
+                        width: '300px',
+                        height: '100px',
+                        background: '#F2F2FF', 
+                        borderRadius: '8px',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      登录
+                    </button>
+                  )}
                 </div>
             </div>
         </div>
